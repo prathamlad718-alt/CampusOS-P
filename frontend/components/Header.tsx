@@ -68,12 +68,23 @@ export function Header() {
         </div>
       </div>
 
-      {/* Center: Live Class Radar Ticker (Visible on wide screens) */}
+      {/* Center: Live Status Ticker */}
       <div className="hidden xl:flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface/80 border border-line text-xs shadow-sm">
-        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="font-mono text-mist">Next Up:</span>
-        <span className="font-medium text-bone">CS-302 DBMS</span>
-        <span className="font-mono text-tide">&bull; 11:00 AM (Rm 204)</span>
+        {user?.isSuperAdmin || user?.role === 'admin' ? (
+          <>
+            <span className="w-2 h-2 rounded-full bg-tide animate-pulse" />
+            <span className="font-mono text-mist">Fleet:</span>
+            <span className="font-medium text-bone">18 Buses Running</span>
+            <span className="font-mono text-amber-400">&bull; 2 Critical Tickets</span>
+          </>
+        ) : (
+          <>
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="font-mono text-mist">Next Up:</span>
+            <span className="font-medium text-bone">CS-302 DBMS</span>
+            <span className="font-mono text-tide">&bull; 11:00 AM (Rm 204)</span>
+          </>
+        )}
       </div>
 
       {/* Right Actions */}

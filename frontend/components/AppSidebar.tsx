@@ -22,7 +22,8 @@ import {
   LifeBuoy,
   Wrench,
   GraduationCap,
-  Sparkles
+  Sparkles,
+  UserCheck
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -56,40 +57,109 @@ interface NavGroup {
   }[];
 }
 
-const NAV_GROUPS: NavGroup[] = [
-  {
-    label: 'Academic Hub',
-    items: [
-      { name: 'Command Center', href: '/dashboard', icon: Home },
-      { name: 'Academic Timeline', href: '/timeline', icon: Clock },
-      { name: 'Assignments', href: '/assignments', icon: BookOpen, badge: '3 Due' }
-    ]
-  },
-  {
-    label: 'Campus & Mobility',
-    items: [
-      { name: 'Collaboration', href: '/collaboration', icon: Users },
-      { name: 'Campus Navigation', href: '/navigation', icon: MapPin },
-      { name: 'Bus Transit Fleet', href: '/transport', icon: Bus, badge: 'Live' },
-      { name: 'Campus Services', href: '/services', icon: LifeBuoy }
-    ]
-  },
-  {
-    label: 'Institutional',
-    items: [
-      { name: 'Faculty Workspace', href: '/faculty', icon: GraduationCap },
-      { name: 'Campus Drive', href: '/drive', icon: FolderLock },
-      { name: 'Issue Reporting', href: '/issues', icon: Wrench }
-    ]
-  },
-  {
-    label: 'System & Platform',
-    items: [
-      { name: 'Plugin Marketplace', href: '/marketplace', icon: Blocks },
-      { name: 'Settings & Privacy', href: '/settings', icon: Settings }
-    ]
+function getNavGroupsForRole(user: any): NavGroup[] {
+  const isAdmin = user?.isSuperAdmin || user?.role === 'admin' || user?.role === 'super-admin';
+  const isFaculty = user?.role === 'faculty';
+
+  // 1. ADMIN NAVIGATION: Zero student homework, high-power administrative control
+  if (isAdmin) {
+    return [
+      {
+        label: 'Administration & Operations',
+        items: [
+          { name: 'Operations Center', href: '/dashboard', icon: Home },
+          { name: 'Admin Console', href: '/admin', icon: ShieldAlert, badge: 'Root' },
+          { name: 'Plugin Marketplace', href: '/marketplace', icon: Blocks, badge: 'Modules' }
+        ]
+      },
+      {
+        label: 'Campus Infrastructure',
+        items: [
+          { name: 'Maintenance Issues', href: '/issues', icon: Wrench, badge: '12 Open' },
+          { name: 'Bus Transit Fleet', href: '/transport', icon: Bus, badge: 'Live' },
+          { name: 'Campus Navigation', href: '/navigation', icon: MapPin },
+          { name: 'Campus Services Hub', href: '/services', icon: LifeBuoy }
+        ]
+      },
+      {
+        label: 'Academic Governance',
+        items: [
+          { name: 'Faculty Registry', href: '/faculty', icon: GraduationCap },
+          { name: 'Central Drive', href: '/drive', icon: FolderLock },
+          { name: 'Institutional Timeline', href: '/timeline', icon: Clock }
+        ]
+      },
+      {
+        label: 'System & Security',
+        items: [
+          { name: 'Settings & Privacy', href: '/settings', icon: Settings }
+        ]
+      }
+    ];
   }
-];
+
+  // 2. FACULTY NAVIGATION: Teaching, grading, and lecture tools
+  if (isFaculty) {
+    return [
+      {
+        label: 'Instruction Portal',
+        items: [
+          { name: 'Faculty Workspace', href: '/faculty', icon: GraduationCap, badge: 'Primary' },
+          { name: 'Lecture Schedule', href: '/timeline', icon: Clock },
+          { name: 'Course Materials', href: '/drive', icon: FolderLock }
+        ]
+      },
+      {
+        label: 'Campus & Facilities',
+        items: [
+          { name: 'Campus Navigation', href: '/navigation', icon: MapPin },
+          { name: 'Campus Services', href: '/services', icon: LifeBuoy },
+          { name: 'Report IT Issue', href: '/issues', icon: Wrench }
+        ]
+      },
+      {
+        label: 'Preferences',
+        items: [
+          { name: 'Settings & Privacy', href: '/settings', icon: Settings }
+        ]
+      }
+    ];
+  }
+
+  // 3. STUDENT NAVIGATION: Personal academic stream, assignments, and campus life
+  return [
+    {
+      label: 'Academic Hub',
+      items: [
+        { name: 'Command Center', href: '/dashboard', icon: Home },
+        { name: 'Academic Timeline', href: '/timeline', icon: Clock },
+        { name: 'Assignments', href: '/assignments', icon: BookOpen, badge: '3 Due' }
+      ]
+    },
+    {
+      label: 'Campus & Mobility',
+      items: [
+        { name: 'Collaboration', href: '/collaboration', icon: Users },
+        { name: 'Campus Navigation', href: '/navigation', icon: MapPin },
+        { name: 'Bus Transit Fleet', href: '/transport', icon: Bus, badge: 'Live' },
+        { name: 'Campus Services', href: '/services', icon: LifeBuoy }
+      ]
+    },
+    {
+      label: 'Institutional',
+      items: [
+        { name: 'Campus Drive', href: '/drive', icon: FolderLock },
+        { name: 'Issue Reporting', href: '/issues', icon: Wrench }
+      ]
+    },
+    {
+      label: 'System & Platform',
+      items: [
+        { name: 'Settings & Privacy', href: '/settings', icon: Settings }
+      ]
+    }
+  ];
+}
 
 import { registry } from '@campus-os/shared/plugin-registry';
 import { initializePlugins } from '@/lib/plugins/init';
@@ -108,6 +178,18 @@ export function AppSidebar({
   const { user } = useAuth();
   const { isMobile } = useSidebar();
   const { data: clubs } = useClubs();
+
+  // Role preview override state for easy testing
+  const [roleOverride, setRoleOverride] = React.useState<string | null>(null);
+
+  const effectiveUser = React.useMemo(() => {
+    if (!roleOverride) return user;
+    if (roleOverride === 'admin') return { ...user, isSuperAdmin: true, role: 'admin' };
+    if (roleOverride === 'faculty') return { ...user, isSuperAdmin: false, role: 'faculty' };
+    return { ...user, isSuperAdmin: false, role: 'student' };
+  }, [user, roleOverride]);
+
+  const navGroups = React.useMemo(() => getNavGroupsForRole(effectiveUser), [effectiveUser]);
 
   return (
     <Sidebar
@@ -138,7 +220,7 @@ export function AppSidebar({
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   </div>
                   <span className="text-[10px] font-mono text-mist">
-                    {user?.isSuperAdmin ? 'Institutional Edition' : 'Student Workstation'}
+                    {effectiveUser?.isSuperAdmin ? 'Institutional Root' : effectiveUser?.role === 'faculty' ? 'Faculty Portal' : 'Student Workstation'}
                   </span>
                 </div>
               </Link>
@@ -147,9 +229,9 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
 
-      {/* Semantic Navigation Groups */}
+      {/* Role-Filtered Navigation Groups */}
       <SidebarContent className="px-2 py-3 space-y-4">
-        {NAV_GROUPS.map((group) => (
+        {navGroups.map((group) => (
           <SidebarGroup key={group.label} className="p-0">
             <SidebarGroupLabel className="text-mist font-mono uppercase tracking-wider text-[10px] px-3 mb-1 font-semibold">
               {group.label}
@@ -198,30 +280,9 @@ export function AppSidebar({
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
-
-        {/* Super Admin Panel link if applicable */}
-        {user?.isSuperAdmin && (
-          <SidebarGroup className="p-0 pt-2 border-t border-line/60">
-            <SidebarGroupLabel className="text-rose-400 font-mono uppercase tracking-wider text-[10px] px-3 mb-1 font-semibold">
-              Super Administration
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem className="px-1 py-0.5">
-                  <SidebarMenuButton asChild className="min-h-[40px] rounded-xl text-rose-400 hover:bg-rose-500/10">
-                    <Link href="/admin">
-                      <ShieldAlert className="size-4 shrink-0" />
-                      <span className="text-xs font-medium">Admin Control Console</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
       </SidebarContent>
 
-      {/* Workspace Footer Switcher */}
+      {/* Workspace & Role Persona Switcher Footer */}
       <SidebarFooter className="p-3 border-t border-line/50">
         <SidebarMenu>
           <SidebarMenuItem>
@@ -229,42 +290,52 @@ export function AppSidebar({
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-surface border border-line bg-ink-2 shadow-sm rounded-xl transition-colors hover:border-line-strong hover:bg-surface"
+                  className="data-[state=open]:bg-surface border border-line bg-ink-2 shadow-sm rounded-xl transition-colors hover:border-line-strong hover:bg-surface cursor-pointer"
                 >
                   <div className="flex aspect-square size-7 items-center justify-center rounded-lg bg-surface text-tide border border-line font-bold text-xs">
-                    {clubId ? clubId.charAt(0).toUpperCase() : 'G'}
+                    {effectiveUser?.isSuperAdmin ? 'A' : effectiveUser?.role === 'faculty' ? 'F' : 'S'}
                   </div>
                   <div className="flex flex-col gap-0.5 leading-none overflow-hidden text-left">
                     <span className="font-medium tracking-tight text-xs text-bone truncate">
-                      {clubId ? (clubs?.find((c) => c.slug === clubId)?.name || clubId) : 'Central University'}
+                      {effectiveUser?.isSuperAdmin ? 'Administrator' : effectiveUser?.role === 'faculty' ? 'Faculty Member' : 'Student Mode'}
                     </span>
                     <span className="text-[10px] text-mist font-mono truncate">
-                      {clubId ? 'Club Workspace' : 'Global Campus Session'}
+                      Click to switch persona
                     </span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-3.5 text-mist" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="rounded-xl bg-ink-2 border-line w-56"
+                className="rounded-xl bg-ink-2 border-line w-60"
                 side={isMobile ? 'bottom' : 'top'}
                 align="start"
               >
                 <DropdownMenuLabel className="text-[10px] font-mono text-mist uppercase">
-                  Switch Active Workspace
+                  Switch Active Role Persona
                 </DropdownMenuLabel>
-                <DropdownMenuItem asChild className="rounded-lg text-xs">
-                  <Link href="/dashboard" className="flex items-center gap-2 cursor-pointer">
-                    <Home className="size-3.5 text-tide" />
-                    <span>Global Dashboard</span>
-                  </Link>
+                <DropdownMenuItem 
+                  onClick={() => setRoleOverride('admin')}
+                  className={`rounded-lg text-xs cursor-pointer ${effectiveUser?.isSuperAdmin ? 'bg-surface font-semibold text-tide' : ''}`}
+                >
+                  <ShieldAlert className="size-3.5 text-rose-400 mr-2" />
+                  <span>Admin / Staff Console</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-lg text-xs">
-                  <Link href="/faculty" className="flex items-center gap-2 cursor-pointer">
-                    <GraduationCap className="size-3.5 text-purple-400" />
-                    <span>Faculty Workspace</span>
-                  </Link>
+                <DropdownMenuItem 
+                  onClick={() => setRoleOverride('faculty')}
+                  className={`rounded-lg text-xs cursor-pointer ${effectiveUser?.role === 'faculty' && !effectiveUser?.isSuperAdmin ? 'bg-surface font-semibold text-tide' : ''}`}
+                >
+                  <GraduationCap className="size-3.5 text-purple-400 mr-2" />
+                  <span>Faculty / Professor</span>
                 </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setRoleOverride('student')}
+                  className={`rounded-lg text-xs cursor-pointer ${!effectiveUser?.isSuperAdmin && effectiveUser?.role !== 'faculty' ? 'bg-surface font-semibold text-tide' : ''}`}
+                >
+                  <Home className="size-3.5 text-tide mr-2" />
+                  <span>Student View (Homework &amp; Class)</span>
+                </DropdownMenuItem>
+
                 {clubs && clubs.length > 0 && (
                   <>
                     <DropdownMenuSeparator className="bg-line" />
