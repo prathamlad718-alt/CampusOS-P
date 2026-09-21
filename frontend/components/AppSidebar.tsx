@@ -21,7 +21,8 @@ import {
   Bus,
   LifeBuoy,
   Wrench,
-  GraduationCap
+  GraduationCap,
+  Sparkles
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -45,25 +46,55 @@ import {
   useSidebar
 } from '@campusos/design-system';
 
-const navigation = [
-  { name: 'Command Center', href: '/dashboard', icon: Home },
-  { name: 'Academic Timeline', href: '/timeline', icon: Clock },
-  { name: 'Assignments', href: '/assignments', icon: BookOpen },
-  { name: 'Collaboration', href: '/collaboration', icon: Users },
-  { name: 'Campus Drive', href: '/drive', icon: FolderLock },
-  { name: 'Navigation Map', href: '/navigation', icon: MapPin },
-  { name: 'Bus Fleet', href: '/transport', icon: Bus },
-  { name: 'Campus Services', href: '/services', icon: LifeBuoy },
-  { name: 'Issue Reporting', href: '/issues', icon: Wrench },
-  { name: 'Faculty Workspace', href: '/faculty', icon: GraduationCap },
-  { name: 'Settings', href: '/settings', icon: Settings }
+interface NavGroup {
+  label: string;
+  items: {
+    name: string;
+    href: string;
+    icon: React.ElementType;
+    badge?: string;
+  }[];
+}
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    label: 'Academic Hub',
+    items: [
+      { name: 'Command Center', href: '/dashboard', icon: Home },
+      { name: 'Academic Timeline', href: '/timeline', icon: Clock },
+      { name: 'Assignments', href: '/assignments', icon: BookOpen, badge: '3 Due' }
+    ]
+  },
+  {
+    label: 'Campus & Mobility',
+    items: [
+      { name: 'Collaboration', href: '/collaboration', icon: Users },
+      { name: 'Campus Navigation', href: '/navigation', icon: MapPin },
+      { name: 'Bus Transit Fleet', href: '/transport', icon: Bus, badge: 'Live' },
+      { name: 'Campus Services', href: '/services', icon: LifeBuoy }
+    ]
+  },
+  {
+    label: 'Institutional',
+    items: [
+      { name: 'Faculty Workspace', href: '/faculty', icon: GraduationCap },
+      { name: 'Campus Drive', href: '/drive', icon: FolderLock },
+      { name: 'Issue Reporting', href: '/issues', icon: Wrench }
+    ]
+  },
+  {
+    label: 'System & Platform',
+    items: [
+      { name: 'Plugin Marketplace', href: '/marketplace', icon: Blocks },
+      { name: 'Settings & Privacy', href: '/settings', icon: Settings }
+    ]
+  }
 ];
 
 import { registry } from '@campus-os/shared/plugin-registry';
 import { initializePlugins } from '@/lib/plugins/init';
 import { useClubs } from '@plugins/club/frontend/hooks';
 
-// Call it once when module is loaded on client
 initializePlugins();
 
 export function AppSidebar({
@@ -76,93 +107,39 @@ export function AppSidebar({
   const pathname = usePathname();
   const { user } = useAuth();
   const { isMobile } = useSidebar();
-
   const { data: clubs } = useClubs();
-
-  // Map string icons back to Lucide components
-  const iconMap: Record<string, React.ElementType> = {
-    Ticket,
-    CheckSquare,
-    Calendar,
-    Users,
-    Settings,
-    Home,
-    ShieldAlert
-  };
-
-  // Combine core navigation with plugin navigation
-  const pluginLinks = registry
-    .getSidebarLinks()
-    .filter((link) => activePlugins.includes(link.pluginId))
-    .filter((link) => {
-      const isWorkspace = link.context !== 'global';
-      // If we are in a club context, show workspace links.
-      // If we are in global context, show global links.
-      return clubId ? isWorkspace : !isWorkspace;
-    })
-    .map((link) => ({
-      name: link.title,
-      href:
-        clubId && link.context !== 'global'
-          ? `/workspace/${clubId}${link.url}`
-          : link.url,
-      icon: link.icon && iconMap[link.icon] ? iconMap[link.icon] : Settings
-    }));
-
-  const allNavigation = clubId
-    ? [
-        { name: 'Dashboard', href: `/workspace/${clubId}`, icon: Home },
-        ...pluginLinks,
-        {
-          name: 'Settings',
-          href: `/workspace/${clubId}/settings`,
-          icon: Settings
-        }
-      ]
-    : [...navigation, ...pluginLinks];
-
-  if (!clubId && user?.isSuperAdmin) {
-    allNavigation.push({
-      name: 'Admin Panel',
-      href: '/admin',
-      icon: ShieldAlert
-    });
-    allNavigation.push({
-      name: 'Marketplace',
-      href: '/marketplace',
-      icon: Blocks
-    });
-  }
 
   return (
     <Sidebar
       variant="sidebar"
       collapsible="icon"
-      className="border-r border-line bg-ink/60 backdrop-blur-2xl"
+      className="border-r border-line bg-ink/75 backdrop-blur-2xl"
     >
-      <SidebarHeader>
+      {/* Brand Header */}
+      <SidebarHeader className="p-3 border-b border-line/50">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               size="lg"
-              className="hover:bg-transparent mb-2"
+              className="hover:bg-transparent"
               asChild
             >
-              <Link href="/dashboard">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-xl bg-gradient-to-tr from-tide to-foam text-ink shadow-[0_0_20px_rgba(70,183,255,0.3)]">
+              <Link href="/dashboard" className="flex items-center gap-3">
+                <div className="flex aspect-square size-9 items-center justify-center rounded-xl bg-gradient-to-tr from-tide to-foam text-ink shadow-[0_0_20px_rgba(70,183,255,0.3)]">
                   <span className="text-xl font-extrabold tracking-tighter">
                     C
                   </span>
                 </div>
-                <div className="flex flex-col gap-0.5 leading-none ml-1">
-                  <span className="font-semibold tracking-tight text-lg text-bone">
-                    CampusOS
-                  </span>
-                  {clubId && (
-                    <span className="text-[11px] text-mist font-medium truncate">
-                      / {clubs?.find((c) => c.slug === clubId)?.name || clubId}
+                <div className="flex flex-col gap-0.5 leading-none">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold tracking-tight text-base text-bone font-serif">
+                      Campus OS
                     </span>
-                  )}
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  </div>
+                  <span className="text-[10px] font-mono text-mist">
+                    {user?.isSuperAdmin ? 'Institutional Edition' : 'Student Workstation'}
+                  </span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -170,106 +147,136 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-mist font-mono uppercase tracking-wider text-[10px]">
-            Application
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {allNavigation.map((item) => {
-                const isActive =
-                  pathname === item.href ||
-                  (item.href !== '/dashboard' &&
-                    item.href !== `/workspace/${clubId}` &&
-                    pathname?.startsWith(item.href + '/'));
-                return (
-                  <SidebarMenuItem key={item.name} className="px-1 py-0.5">
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isActive}
-                      tooltip={item.name}
-                      className={`min-h-[44px] transition-all duration-300 rounded-xl ${isActive ? 'bg-surface border border-line-strong text-tide shadow-[0_0_15px_rgba(70,183,255,0.1)]' : 'hover:bg-surface hover:text-bone text-mist border border-transparent'}`}
-                    >
-                      <Link href={item.href}>
-                        <item.icon className="size-5" />
-                        <span className="text-[15px] font-medium">
-                          {item.name}
-                        </span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+      {/* Semantic Navigation Groups */}
+      <SidebarContent className="px-2 py-3 space-y-4">
+        {NAV_GROUPS.map((group) => (
+          <SidebarGroup key={group.label} className="p-0">
+            <SidebarGroupLabel className="text-mist font-mono uppercase tracking-wider text-[10px] px-3 mb-1 font-semibold">
+              {group.label}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {group.items.map((item) => {
+                  const isActive =
+                    pathname === item.href ||
+                    (item.href !== '/dashboard' && pathname?.startsWith(item.href + '/'));
+
+                  return (
+                    <SidebarMenuItem key={item.name} className="px-1 py-0.5">
+                      <SidebarMenuButton
+                        asChild
+                        isActive={isActive}
+                        tooltip={item.name}
+                        className={`min-h-[40px] transition-all duration-200 rounded-xl ${
+                          isActive
+                            ? 'bg-surface border border-tide/40 text-tide shadow-[0_0_15px_rgba(70,183,255,0.08)] font-semibold'
+                            : 'hover:bg-surface hover:text-bone text-mist border border-transparent'
+                        }`}
+                      >
+                        <Link href={item.href} className="flex items-center justify-between w-full">
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <item.icon className={`size-4 shrink-0 ${isActive ? 'text-tide' : 'text-mist'}`} />
+                            <span className="text-xs truncate">
+                              {item.name}
+                            </span>
+                          </div>
+                          {item.badge && (
+                            <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded-md shrink-0 ${
+                              isActive
+                                ? 'bg-tide text-white font-bold'
+                                : 'bg-surface border border-line text-mist'
+                            }`}>
+                              {item.badge}
+                            </span>
+                          )}
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
+
+        {/* Super Admin Panel link if applicable */}
+        {user?.isSuperAdmin && (
+          <SidebarGroup className="p-0 pt-2 border-t border-line/60">
+            <SidebarGroupLabel className="text-rose-400 font-mono uppercase tracking-wider text-[10px] px-3 mb-1 font-semibold">
+              Super Administration
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem className="px-1 py-0.5">
+                  <SidebarMenuButton asChild className="min-h-[40px] rounded-xl text-rose-400 hover:bg-rose-500/10">
+                    <Link href="/admin">
+                      <ShieldAlert className="size-4 shrink-0" />
+                      <span className="text-xs font-medium">Admin Control Console</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
-      <SidebarFooter>
+      {/* Workspace Footer Switcher */}
+      <SidebarFooter className="p-3 border-t border-line/50">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-surface data-[state=open]:text-bone border border-line bg-ink-2 shadow-[0_8px_30px_rgba(0,0,0,0.5)] rounded-xl transition-colors hover:border-line-strong hover:bg-surface"
+                  className="data-[state=open]:bg-surface border border-line bg-ink-2 shadow-sm rounded-xl transition-colors hover:border-line-strong hover:bg-surface"
                 >
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-surface text-tide border border-line">
-                    <span className="text-sm font-bold">
-                      {clubId ? clubId.charAt(0).toUpperCase() : 'G'}
+                  <div className="flex aspect-square size-7 items-center justify-center rounded-lg bg-surface text-tide border border-line font-bold text-xs">
+                    {clubId ? clubId.charAt(0).toUpperCase() : 'G'}
+                  </div>
+                  <div className="flex flex-col gap-0.5 leading-none overflow-hidden text-left">
+                    <span className="font-medium tracking-tight text-xs text-bone truncate">
+                      {clubId ? (clubs?.find((c) => c.slug === clubId)?.name || clubId) : 'Central University'}
+                    </span>
+                    <span className="text-[10px] text-mist font-mono truncate">
+                      {clubId ? 'Club Workspace' : 'Global Campus Session'}
                     </span>
                   </div>
-                  <div className="flex flex-col gap-0.5 leading-none overflow-hidden">
-                    <span className="font-semibold tracking-tight text-sm text-bone truncate">
-                      {clubId
-                        ? clubs?.find((c) => c.slug === clubId)?.name || clubId
-                        : 'Global Dashboard'}
-                    </span>
-                    <span className="text-xs text-mist truncate">
-                      {clubId ? 'Workspace' : 'System'}
-                    </span>
-                  </div>
-                  <ChevronsUpDown className="ml-auto size-4 text-mist" />
+                  <ChevronsUpDown className="ml-auto size-3.5 text-mist" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="rounded-lg"
-                style={{ width: 'var(--radix-dropdown-menu-trigger-width)' }}
+                className="rounded-xl bg-ink-2 border-line w-56"
                 side={isMobile ? 'bottom' : 'top'}
                 align="start"
-                sideOffset={4}
               >
-                <DropdownMenuLabel className="text-xs text-muted-foreground">
-                  Switch Workspace
+                <DropdownMenuLabel className="text-[10px] font-mono text-mist uppercase">
+                  Switch Active Workspace
                 </DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <div className="flex size-6 items-center justify-center rounded-sm border">
-                      <Home className="size-3" />
-                    </div>
-                    Global Dashboard
+                <DropdownMenuItem asChild className="rounded-lg text-xs">
+                  <Link href="/dashboard" className="flex items-center gap-2 cursor-pointer">
+                    <Home className="size-3.5 text-tide" />
+                    <span>Global Dashboard</span>
                   </Link>
                 </DropdownMenuItem>
-
+                <DropdownMenuItem asChild className="rounded-lg text-xs">
+                  <Link href="/faculty" className="flex items-center gap-2 cursor-pointer">
+                    <GraduationCap className="size-3.5 text-purple-400" />
+                    <span>Faculty Workspace</span>
+                  </Link>
+                </DropdownMenuItem>
                 {clubs && clubs.length > 0 && (
                   <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuLabel className="text-xs text-muted-foreground">
-                      Your Clubs
+                    <DropdownMenuSeparator className="bg-line" />
+                    <DropdownMenuLabel className="text-[10px] font-mono text-mist uppercase">
+                      Student Organizations
                     </DropdownMenuLabel>
                     {clubs.map((club) => (
-                      <DropdownMenuItem key={club.id} asChild>
-                        <Link
-                          href={`/workspace/${club.slug}`}
-                          className="flex items-center gap-2 cursor-pointer"
-                        >
-                          <div className="flex size-6 items-center justify-center rounded-sm border bg-primary/10">
+                      <DropdownMenuItem key={club.id} asChild className="rounded-lg text-xs">
+                        <Link href={`/workspace/${club.slug}`} className="flex items-center gap-2 cursor-pointer">
+                          <span className="size-4 rounded-sm bg-tide/10 text-tide flex items-center justify-center font-bold text-[10px]">
                             {club.name.charAt(0)}
-                          </div>
+                          </span>
                           <span className="truncate">{club.name}</span>
                         </Link>
                       </DropdownMenuItem>

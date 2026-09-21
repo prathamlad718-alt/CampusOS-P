@@ -43,11 +43,13 @@ export default async function DashboardLayout({
     <SidebarProvider defaultOpen={defaultOpen}>
       <RequireAuth>
         <AppSidebar activePlugins={activePlugins} />
-        <SidebarInset>
+        <SidebarInset className="bg-ink min-h-screen flex flex-col">
           <Header />
-          <main className="relative flex-1 bg-ink overflow-hidden tide-glow">
-            <div className="absolute inset-0 z-0 grain opacity-[0.03] pointer-events-none mix-blend-overlay"></div>
-            <div className="relative z-10 p-5 md:p-8 pb-20">{children}</div>
+          <main className="relative flex-1 bg-ink overflow-x-hidden tide-glow">
+            <div className="absolute inset-0 z-0 grain opacity-[0.03] pointer-events-none mix-blend-overlay" />
+            <div className="relative z-10 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full pb-24">
+              {children}
+            </div>
           </main>
         </SidebarInset>
       </RequireAuth>

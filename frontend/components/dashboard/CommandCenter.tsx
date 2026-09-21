@@ -45,6 +45,8 @@ export function CommandCenter({ onOpenSearch }: { onOpenSearch?: () => void }) {
   const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
   const [currentTime, setCurrentTime] = useState<string>('');
   const [currentDate, setCurrentDate] = useState<string>('');
+  const [checkedIn, setCheckedIn] = useState<boolean>(false);
+  const [showBunkCalc, setShowBunkCalc] = useState<boolean>(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -164,6 +166,24 @@ export function CommandCenter({ onOpenSearch }: { onOpenSearch?: () => void }) {
             </div>
           </div>
 
+          {/* Instant Class Self Check-In */}
+          <div className="mb-4">
+            {checkedIn ? (
+              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Checked-in to Room 204 @ 11:00 AM (Geo-Verified ✓)</span>
+              </div>
+            ) : (
+              <button
+                onClick={() => setCheckedIn(true)}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-mono font-semibold transition-all cursor-pointer shadow-sm hover:scale-[1.01]"
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                <span>Self Check-In to Class (Room 204)</span>
+              </button>
+            )}
+          </div>
+
           <div className="mt-auto grid grid-cols-2 gap-3 pt-2">
             <Link
               href="/navigation?destination=Room+204"
@@ -175,20 +195,25 @@ export function CommandCenter({ onOpenSearch }: { onOpenSearch?: () => void }) {
               href="/drive?subject=CS302"
               className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-tide hover:bg-tide/90 text-xs font-medium text-white transition-colors"
             >
-              <BookOpen className="w-3.5 h-3.5" /> Slides & Notes
+              <BookOpen className="w-3.5 h-3.5" /> Slides &amp; Notes
             </Link>
           </div>
         </div>
 
-        {/* COLUMN 2: Attendance Health Status */}
+        {/* COLUMN 2: Attendance Health Status + Bunk Calculator */}
         <div className="glass-panel p-6 rounded-3xl border border-line-strong flex flex-col relative overflow-hidden">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-mono uppercase tracking-widest text-mist flex items-center gap-2">
               <TrendingUp className="w-3.5 h-3.5 text-emerald-400" /> Attendance Health
             </span>
-            <span className="text-xs font-mono font-medium text-emerald-400">
-              Criteria: &ge; 75%
-            </span>
+            <button
+              onClick={() => setShowBunkCalc(!showBunkCalc)}
+              className={`text-[10px] font-mono px-2 py-0.5 rounded-full transition-colors ${
+                showBunkCalc ? 'bg-tide text-white font-bold' : 'bg-surface border border-line text-tide hover:text-bone'
+              }`}
+            >
+              {showBunkCalc ? 'Show Normal' : 'Bunk Calculator ⚡'}
+            </button>
           </div>
 
           <div className="flex items-baseline gap-3 mb-2">
@@ -199,7 +224,7 @@ export function CommandCenter({ onOpenSearch }: { onOpenSearch?: () => void }) {
               Safe Standing
             </span>
           </div>
-          <p className="text-xs text-mist mb-6">
+          <p className="text-xs text-mist mb-5">
             Total attended: 144 / 171 sessions this semester.
           </p>
 
@@ -208,7 +233,9 @@ export function CommandCenter({ onOpenSearch }: { onOpenSearch?: () => void }) {
             <div>
               <div className="flex justify-between text-xs mb-1">
                 <span className="text-bone font-medium">CS-302: DBMS</span>
-                <span className="font-mono text-emerald-400 font-semibold">91.4% (32/35)</span>
+                <span className="font-mono text-emerald-400 font-semibold">
+                  {showBunkCalc ? 'Can skip 6 classes safely ✓' : '91.4% (32/35)'}
+                </span>
               </div>
               <div className="h-1.5 bg-surface rounded-full overflow-hidden">
                 <div className="h-full bg-emerald-400 rounded-full" style={{ width: '91.4%' }} />
@@ -219,7 +246,9 @@ export function CommandCenter({ onOpenSearch }: { onOpenSearch?: () => void }) {
             <div>
               <div className="flex justify-between text-xs mb-1">
                 <span className="text-bone font-medium">CS-304: Distributed Systems</span>
-                <span className="font-mono text-emerald-400 font-semibold">82.8% (29/35)</span>
+                <span className="font-mono text-emerald-400 font-semibold">
+                  {showBunkCalc ? 'Can skip 3 classes safely ✓' : '82.8% (29/35)'}
+                </span>
               </div>
               <div className="h-1.5 bg-surface rounded-full overflow-hidden">
                 <div className="h-full bg-emerald-400 rounded-full" style={{ width: '82.8%' }} />
@@ -233,7 +262,9 @@ export function CommandCenter({ onOpenSearch }: { onOpenSearch?: () => void }) {
                   <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
                   PH-102: Applied Physics
                 </span>
-                <span className="font-mono text-rose-400 font-bold">68.5% (24/35)</span>
+                <span className="font-mono text-rose-400 font-bold">
+                  {showBunkCalc ? '0 skips allowed! (Danger)' : '68.5% (24/35)'}
+                </span>
               </div>
               <div className="h-1.5 bg-surface rounded-full overflow-hidden">
                 <div className="h-full bg-rose-400 rounded-full" style={{ width: '68.5%' }} />
@@ -245,7 +276,7 @@ export function CommandCenter({ onOpenSearch }: { onOpenSearch?: () => void }) {
           </div>
 
           <div className="mt-4 pt-3 border-t border-line flex justify-between items-center text-xs text-mist">
-            <span>Next class attendance check-in: 11:05 AM</span>
+            <span>Minimum criteria: &ge; 75%</span>
             <Link href="/timeline" className="text-tide hover:underline font-medium">
               View Detailed Roster &rarr;
             </Link>
