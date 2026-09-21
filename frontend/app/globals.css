@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Inter:wght@100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "tailwindcss";
+@source "../../plugins";
+@source "../../packages/design-system";
+@source "../../shared";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-space-mono);
+  --font-heading: var(--font-serif);
+  --font-display: var(--font-serif);
+  
+  --color-ink: var(--color-ink-theme);
+  --color-ink-2: var(--color-ink-2-theme);
+  --color-bone: var(--color-bone-theme);
+  --color-mist: var(--color-mist-theme);
+  --color-tide: var(--color-tide-theme);
+  --color-foam: var(--color-foam-theme);
+  --color-line: var(--color-line-theme);
+  --color-line-strong: var(--color-line-strong-theme);
+  --color-surface: var(--color-surface-theme);
+  --color-surface-raised: var(--color-surface-raised-theme);
+
+  /* Mapping standard tailwind vars for shadcn */
+  --color-background: var(--color-ink-theme);
+  --color-foreground: var(--color-bone-theme);
+  --color-primary: var(--color-tide-theme);
+  --color-primary-foreground: #ffffff;
+  --color-card: var(--color-ink-2-theme);
+  --color-card-foreground: var(--color-bone-theme);
+  --color-popover: var(--color-ink-2-theme);
+  --color-popover-foreground: var(--color-bone-theme);
+  --color-secondary: var(--color-surface-theme);
+  --color-secondary-foreground: var(--color-bone-theme);
+  --color-muted: var(--color-surface-theme);
+  --color-muted-foreground: var(--color-mist-theme);
+  --color-accent: var(--color-surface-raised-theme);
+  --color-accent-foreground: var(--color-bone-theme);
+  --color-border: var(--color-line-theme);
+  --color-input: var(--color-line-theme);
+  --color-ring: var(--color-tide-theme);
+  --color-sidebar: var(--color-ink-theme);
+  --color-sidebar-foreground: var(--color-bone-theme);
+  --color-sidebar-border: var(--color-line-theme);
+  --color-sidebar-primary: var(--color-tide-theme);
+  --color-sidebar-primary-foreground: #ffffff;
+  
+  /* Typography Scale */
+  --text-display-lg: 4.5rem / 1.05;
+  --text-display-md: 3.5rem / 1.1;
+  --text-display-sm: 2.75rem / 1.15;
+  --text-heading-lg: 2.25rem / 1.2;
+  --text-heading-md: 1.75rem / 1.3;
+  --text-heading-sm: 1.25rem / 1.4;
+  --text-heading-xs: 1.125rem / 1.5;
+  
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.25);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 2);
+  --radius-4xl: calc(var(--radius) * 2.5);
+}
+
+:root {
+  --font-inter: 'Inter', sans-serif;
+  --font-bricolage: 'Bricolage Grotesque', sans-serif;
+  --font-serif: 'Newsreader', serif;
+  --font-space-mono: 'Space Mono', monospace;
+
+  /* Cinematic Light Theme - Kept for compatibility, though dark is primary */
+  --color-ink-theme: #ffffff;
+  --color-ink-2-theme: #f4f4f5;
+  --color-bone-theme: #09090b;
+  --color-mist-theme: #71717a;
+  --color-tide-theme: #2563eb; /* Electric Royal Blue */
+  --color-foam-theme: #60a5fa;
+  --color-line-theme: rgba(0, 0, 0, 0.08);
+  --color-line-strong-theme: rgba(0, 0, 0, 0.15);
+  --color-surface-theme: #f8fafc;
+  --color-surface-raised-theme: #f1f5f9;
+
+  --radius: 0.5rem; /* Restrained rounding */
+}
+
+.dark {
+  /* Premium Cinematic Dark Theme */
+  --color-ink-theme: #050505; /* Deepest background (Plane 1) */
+  --color-ink-2-theme: #0f0f11; /* Primary surface (Plane 2) */
+  --color-bone-theme: #fafafa;
+  --color-mist-theme: #a1a1aa;
+  --color-tide-theme: #3b82f6; /* Electric Royal Blue */
+  --color-foam-theme: #60a5fa;
+  --color-line-theme: rgba(255, 255, 255, 0.06);
+  --color-line-strong-theme: rgba(255, 255, 255, 0.12);
+  --color-surface-theme: rgba(255, 255, 255, 0.03); /* Secondary surface (Plane 3) */
+  --color-surface-raised-theme: rgba(255, 255, 255, 0.06); /* Elevated card (Plane 4) */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  html {
+    @apply font-sans bg-ink text-bone;
+  }
+  
+  body {
+    @apply bg-ink text-bone min-h-screen overflow-x-clip;
+  }
+  
+  /* Selection styling */
+  ::selection {
+    @apply bg-tide/30 text-bone;
+  }
+
+  /* Typography Styles */
+  h1, h2, h3, h4, h5, h6, .display-lg, .display-md, .display-sm {
+    font-family: var(--font-heading);
+    color: var(--color-bone-theme);
+    font-weight: 400; /* Serif usually looks better lighter */
+    letter-spacing: -0.02em;
+  }
+  
+  h1 { @apply text-5xl tracking-tight; }
+  h2 { @apply text-4xl tracking-tight; }
+  h3 { @apply text-3xl tracking-tight; }
+  h4 { @apply text-2xl tracking-tight; }
+  
+  p { @apply text-mist leading-relaxed font-sans; }
+  
+  /* Cinematic Utilities */
+  .tide-glow {
+    background: radial-gradient(circle at 50% -20%, rgba(59, 130, 246, 0.15), transparent 60%);
+  }
+  .light .tide-glow {
+    background: radial-gradient(circle at 50% -20%, rgba(37, 99, 235, 0.08), transparent 60%);
+  }
+  
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+  
+  /* Utilities for the OS Redesign */
+  .glass-panel {
+    @apply bg-ink-2/60 backdrop-blur-md border border-line shadow-2xl;
+  }
+  
+  .system-label {
+    @apply font-sans text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground;
+  }
+  
+  .blue-accent-text {
+    @apply text-tide font-medium;
+  }
+}

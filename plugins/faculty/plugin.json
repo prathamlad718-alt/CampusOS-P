@@ -1,0 +1,6 @@
+{
+  "name": "faculty",
+  "version": "1.0.0",
+  "description": "Dedicated dashboard for teachers to manage classes.",
+  "defaultEnabled": false
+}

@@ -1,0 +1,6 @@
+{
+  "name": "navigation",
+  "version": "1.0.0",
+  "description": "Find accessible routes to any room on campus.",
+  "defaultEnabled": false
+}

@@ -1,0 +1,6 @@
+{
+  "name": "timeline",
+  "version": "1.0.0",
+  "description": "Your unified stream of classes, assignments, and events.",
+  "defaultEnabled": false
+}

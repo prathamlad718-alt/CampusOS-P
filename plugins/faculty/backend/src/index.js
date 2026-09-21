@@ -1,0 +1,1 @@
+export async function init(app, registry, eventBus) { console.log('Loaded dummy plugin: ' + 'faculty'); }

@@ -1,0 +1,6 @@
+{
+  "name": "drive",
+  "version": "1.0.0",
+  "description": "Centralized file system for notes, labs, and assignments.",
+  "defaultEnabled": false
+}

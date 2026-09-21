@@ -1,0 +1,6 @@
+{
+  "name": "issues",
+  "version": "1.0.0",
+  "description": "Report broken infrastructure with photo attachments.",
+  "defaultEnabled": false
+}

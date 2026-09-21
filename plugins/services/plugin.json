@@ -1,0 +1,6 @@
+{
+  "name": "services",
+  "version": "1.0.0",
+  "description": "Centralized hub for Library, Medical, Security, etc.",
+  "defaultEnabled": false
+}

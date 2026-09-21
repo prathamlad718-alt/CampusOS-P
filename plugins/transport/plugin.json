@@ -1,0 +1,6 @@
+{
+  "name": "transport",
+  "version": "1.0.0",
+  "description": "Live routes, stops, and bus tracking.",
+  "defaultEnabled": false
+}
