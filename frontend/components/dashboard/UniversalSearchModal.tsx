@@ -140,6 +140,23 @@ const KNOWLEDGE_BASE: SearchItem[] = [
     subtitle: 'Search notes, past question papers, and lab manuals',
     badge: 'Drive',
     url: '/drive'
+  },
+  {
+    id: 'a4',
+    category: 'action',
+    title: 'Seat & Facility Reservation',
+    subtitle: 'Book seats in Library, Labs, Lecture & Seminar Halls',
+    badge: 'Booking',
+    url: '/booking'
+  },
+  {
+    id: 'q6',
+    category: 'answer',
+    title: 'Library Pods & Lab Seat Booking',
+    subtitle: 'Interactive seat grid • Instant QR gate pass generation',
+    highlight: 'Students reserve individual seats; Faculty can also book entire classrooms & seminar halls',
+    badge: 'Facility Pass',
+    url: '/booking'
   }
 ];
 
@@ -194,6 +211,7 @@ export function UniversalSearchModal({ isOpen, onClose }: UniversalSearchModalPr
     if ((q.includes('robotics') || q.includes('robot')) && (item.id === 'q3' || item.title.toLowerCase().includes('robotics'))) return true;
     if (q.includes('204') && (item.id === 'q4' || item.subtitle.includes('204'))) return true;
     if (q.includes('physics') || (q.includes('attendance') && item.id === 'q5')) return true;
+    if ((q.includes('book') || q.includes('seat') || q.includes('reserve') || q.includes('library') || q.includes('seminar') || q.includes('hall')) && (item.id === 'a4' || item.id === 'q6')) return true;
 
     return (
       item.title.toLowerCase().includes(q) ||

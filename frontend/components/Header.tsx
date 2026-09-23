@@ -30,6 +30,7 @@ const ROUTE_META: Record<string, { title: string; category: string }> = {
   '/faculty': { title: 'Faculty Workspace', category: 'Instruction' },
   '/settings': { title: 'System & Privacy Settings', category: 'Preferences' },
   '/marketplace': { title: 'Plugin Marketplace', category: 'Ecosystem' },
+  '/booking': { title: 'Seat & Space Reservation', category: 'Facilities' },
   '/profile': { title: 'Student Profile', category: 'Identity' }
 };
 

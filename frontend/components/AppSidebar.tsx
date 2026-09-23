@@ -23,7 +23,8 @@ import {
   Wrench,
   GraduationCap,
   Sparkles,
-  UserCheck
+  UserCheck,
+  Armchair
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -75,6 +76,7 @@ function getNavGroupsForRole(user: any): NavGroup[] {
       {
         label: 'Campus Infrastructure',
         items: [
+          { name: 'Seat & Space Booking', href: '/booking', icon: Armchair, badge: 'New' },
           { name: 'Maintenance Issues', href: '/issues', icon: Wrench, badge: '12 Open' },
           { name: 'Bus Transit Fleet', href: '/transport', icon: Bus, badge: 'Live' },
           { name: 'Campus Navigation', href: '/navigation', icon: MapPin },
@@ -112,6 +114,7 @@ function getNavGroupsForRole(user: any): NavGroup[] {
       {
         label: 'Campus & Facilities',
         items: [
+          { name: 'Seat & Room Booking', href: '/booking', icon: Armchair, badge: 'New' },
           { name: 'Campus Navigation', href: '/navigation', icon: MapPin },
           { name: 'Campus Services', href: '/services', icon: LifeBuoy },
           { name: 'Report IT Issue', href: '/issues', icon: Wrench }
@@ -139,6 +142,7 @@ function getNavGroupsForRole(user: any): NavGroup[] {
     {
       label: 'Campus & Mobility',
       items: [
+        { name: 'Seat & Space Booking', href: '/booking', icon: Armchair, badge: 'New' },
         { name: 'Collaboration', href: '/collaboration', icon: Users },
         { name: 'Campus Navigation', href: '/navigation', icon: MapPin },
         { name: 'Bus Transit Fleet', href: '/transport', icon: Bus, badge: 'Live' },
