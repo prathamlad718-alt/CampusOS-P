@@ -24,7 +24,9 @@ import {
   GraduationCap,
   Sparkles,
   UserCheck,
-  Armchair
+  Armchair,
+  BarChart2,
+  CalendarDays
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -86,6 +88,8 @@ function getNavGroupsForRole(user: any): NavGroup[] {
       {
         label: 'Academic Governance',
         items: [
+          { name: 'Curriculum & Courses', href: '/courses', icon: BookOpen },
+          { name: 'Institutional Timetable', href: '/timetable', icon: CalendarDays },
           { name: 'Faculty Registry', href: '/faculty', icon: GraduationCap },
           { name: 'Central Drive', href: '/drive', icon: FolderLock },
           { name: 'Institutional Timeline', href: '/timeline', icon: Clock }
@@ -107,6 +111,8 @@ function getNavGroupsForRole(user: any): NavGroup[] {
         label: 'Instruction Portal',
         items: [
           { name: 'Faculty Workspace', href: '/faculty', icon: GraduationCap, badge: 'Primary' },
+          { name: 'My Courses & Gradebook', href: '/courses', icon: BookOpen },
+          { name: 'Weekly Timetable', href: '/timetable', icon: CalendarDays },
           { name: 'Lecture Schedule', href: '/timeline', icon: Clock },
           { name: 'Course Materials', href: '/drive', icon: FolderLock }
         ]
@@ -135,8 +141,11 @@ function getNavGroupsForRole(user: any): NavGroup[] {
       label: 'Academic Hub',
       items: [
         { name: 'Command Center', href: '/dashboard', icon: Home },
-        { name: 'Academic Timeline', href: '/timeline', icon: Clock },
-        { name: 'Assignments', href: '/assignments', icon: BookOpen, badge: '3 Due' }
+        { name: 'My Courses', href: '/courses', icon: BookOpen, badge: '5 Enrolled' },
+        { name: 'Weekly Timetable', href: '/timetable', icon: CalendarDays },
+        { name: 'Academic Profile & GPA', href: '/academics', icon: BarChart2, badge: '8.76' },
+        { name: 'Assignments', href: '/assignments', icon: CheckSquare, badge: '3 Due' },
+        { name: 'Academic Timeline', href: '/timeline', icon: Clock }
       ]
     },
     {

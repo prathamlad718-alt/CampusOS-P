@@ -367,18 +367,24 @@ export function CommandCenter({ onOpenSearch }: { onOpenSearch?: () => void }) {
               )}
             </div>
 
-            <div className="mt-auto grid grid-cols-2 gap-3 pt-2">
+            <div className="mt-auto grid grid-cols-3 gap-2 pt-2">
               <Link
                 href="/navigation?destination=Room+204"
-                className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-ink-2 hover:bg-surface border border-line text-xs font-medium text-bone transition-colors"
+                className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-ink-2 hover:bg-surface border border-line text-xs font-medium text-bone transition-colors"
               >
-                <MapPin className="w-3.5 h-3.5 text-tide" /> Route to Room
+                <MapPin className="w-3.5 h-3.5 text-tide" /> Route
               </Link>
               <Link
-                href="/drive?subject=CS302"
-                className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-tide hover:bg-tide/90 text-xs font-medium text-white transition-colors"
+                href="/courses/cs302"
+                className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-surface hover:bg-surface/80 border border-line text-xs font-medium text-tide transition-colors"
               >
-                <BookOpen className="w-3.5 h-3.5" /> Slides &amp; Notes
+                <BookOpen className="w-3.5 h-3.5" /> Course Hub
+              </Link>
+              <Link
+                href="/timetable"
+                className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-tide hover:bg-tide/90 text-xs font-medium text-ink font-semibold transition-colors"
+              >
+                <Clock className="w-3.5 h-3.5" /> Timetable
               </Link>
             </div>
           </div>
@@ -457,8 +463,8 @@ export function CommandCenter({ onOpenSearch }: { onOpenSearch?: () => void }) {
 
             <div className="mt-4 pt-3 border-t border-line flex justify-between items-center text-xs text-mist">
               <span>Minimum criteria: &ge; 75%</span>
-              <Link href="/timeline" className="text-tide hover:underline font-medium">
-                View Detailed Roster &rarr;
+              <Link href="/academics" className="text-tide hover:underline font-medium">
+                View Academic Transcript &rarr;
               </Link>
             </div>
           </div>

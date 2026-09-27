@@ -31,6 +31,9 @@ const ROUTE_META: Record<string, { title: string; category: string }> = {
   '/settings': { title: 'System & Privacy Settings', category: 'Preferences' },
   '/marketplace': { title: 'Plugin Marketplace', category: 'Ecosystem' },
   '/booking': { title: 'Seat & Space Reservation', category: 'Facilities' },
+  '/courses': { title: 'Academic Courses & Curriculum', category: 'Academics' },
+  '/timetable': { title: 'Recurring Academic Timetable', category: 'Schedule' },
+  '/academics': { title: 'Academic Record & Results', category: 'Transcript' },
   '/profile': { title: 'Student Profile', category: 'Identity' }
 };
 

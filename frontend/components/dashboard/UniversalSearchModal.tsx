@@ -157,6 +157,48 @@ const KNOWLEDGE_BASE: SearchItem[] = [
     highlight: 'Students reserve individual seats; Faculty can also book entire classrooms & seminar halls',
     badge: 'Facility Pass',
     url: '/booking'
+  },
+  {
+    id: 'a5',
+    category: 'action',
+    title: 'My Academic Courses & Curriculum',
+    subtitle: 'Enrolled subjects, syllabus units, notes & faculty contact',
+    badge: 'Courses',
+    url: '/courses'
+  },
+  {
+    id: 'a6',
+    category: 'action',
+    title: 'Weekly Academic Timetable',
+    subtitle: 'Monday – Friday period grid, room slots & class schedule',
+    badge: 'Timetable',
+    url: '/timetable'
+  },
+  {
+    id: 'a7',
+    category: 'action',
+    title: 'Student Academic Profile & Transcript',
+    subtitle: '10.0 GPA scale, SGPA/CGPA progression, credits & exam marks',
+    badge: 'Academics',
+    url: '/academics'
+  },
+  {
+    id: 'q7',
+    category: 'answer',
+    title: 'Current CGPA & Semester SGPA Standing',
+    subtitle: 'Cumulative: 8.76 CGPA • Current Sem 5: 8.89 SGPA • 88 Credits Earned',
+    highlight: 'Clean record with 0 active backlogs. Top 5% cohort standing.',
+    badge: 'Direct Results',
+    url: '/academics'
+  },
+  {
+    id: 'q8',
+    category: 'answer',
+    title: 'Today’s Timetable & Period Schedule',
+    subtitle: 'Mon–Fri 09:00 AM – 05:00 PM recurring slots with zero clashes',
+    highlight: 'Next class: CS-302 DBMS at 11:15 AM (Room 204)',
+    badge: 'Timetable',
+    url: '/timetable'
   }
 ];
 
@@ -212,6 +254,9 @@ export function UniversalSearchModal({ isOpen, onClose }: UniversalSearchModalPr
     if (q.includes('204') && (item.id === 'q4' || item.subtitle.includes('204'))) return true;
     if (q.includes('physics') || (q.includes('attendance') && item.id === 'q5')) return true;
     if ((q.includes('book') || q.includes('seat') || q.includes('reserve') || q.includes('library') || q.includes('seminar') || q.includes('hall')) && (item.id === 'a4' || item.id === 'q6')) return true;
+    if ((q.includes('course') || q.includes('subject') || q.includes('curriculum') || q.includes('syllabus')) && (item.id === 'a5')) return true;
+    if ((q.includes('timetable') || q.includes('schedule') || q.includes('period') || q.includes('class time') || q.includes('monday') || q.includes('friday')) && (item.id === 'a6' || item.id === 'q8')) return true;
+    if ((q.includes('gpa') || q.includes('cgpa') || q.includes('sgpa') || q.includes('transcript') || q.includes('result') || q.includes('mark') || q.includes('grade')) && (item.id === 'a7' || item.id === 'q7')) return true;
 
     return (
       item.title.toLowerCase().includes(q) ||
