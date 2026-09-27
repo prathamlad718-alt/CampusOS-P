@@ -34,6 +34,8 @@ const ROUTE_META: Record<string, { title: string; category: string }> = {
   '/courses': { title: 'Academic Courses & Curriculum', category: 'Academics' },
   '/timetable': { title: 'Recurring Academic Timetable', category: 'Schedule' },
   '/academics': { title: 'Academic Record & Results', category: 'Transcript' },
+  '/notifications': { title: 'Actionable Alert Center', category: 'Communications' },
+  '/announcements': { title: 'Institutional Bulletins', category: 'Broadcast' },
   '/profile': { title: 'Student Profile', category: 'Identity' }
 };
 
@@ -157,9 +159,12 @@ export function Header() {
                   <p className="text-[10px] text-mist m-0">2 hours ago</p>
                 </DropdownMenuItem>
               </div>
-              <div className="p-2 border-t border-line text-center">
-                <Link href="/settings" className="text-tide text-xs font-medium hover:underline">
-                  Configure Notification Rules &rarr;
+              <div className="p-3 border-t border-line flex items-center justify-between text-xs">
+                <Link href="/notifications" className="text-tide font-mono font-medium hover:underline">
+                  Open Alert Center &rarr;
+                </Link>
+                <Link href="/announcements" className="text-mist font-mono hover:text-bone">
+                  Directives &rarr;
                 </Link>
               </div>
             </DropdownMenuContent>

@@ -26,7 +26,9 @@ import {
   UserCheck,
   Armchair,
   BarChart2,
-  CalendarDays
+  CalendarDays,
+  Bell,
+  Megaphone
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -71,6 +73,8 @@ function getNavGroupsForRole(user: any): NavGroup[] {
         label: 'Administration & Operations',
         items: [
           { name: 'Operations Center', href: '/dashboard', icon: Home },
+          { name: 'Alert Center', href: '/notifications', icon: Bell, badge: '4' },
+          { name: 'Official Bulletins', href: '/announcements', icon: Megaphone },
           { name: 'Admin Console', href: '/admin', icon: ShieldAlert, badge: 'Root' },
           { name: 'Plugin Marketplace', href: '/marketplace', icon: Blocks, badge: 'Modules' }
         ]
@@ -111,6 +115,8 @@ function getNavGroupsForRole(user: any): NavGroup[] {
         label: 'Instruction Portal',
         items: [
           { name: 'Faculty Workspace', href: '/faculty', icon: GraduationCap, badge: 'Primary' },
+          { name: 'Alerts & Messages', href: '/notifications', icon: Bell, badge: '4' },
+          { name: 'Official Announcements', href: '/announcements', icon: Megaphone },
           { name: 'My Courses & Gradebook', href: '/courses', icon: BookOpen },
           { name: 'Weekly Timetable', href: '/timetable', icon: CalendarDays },
           { name: 'Lecture Schedule', href: '/timeline', icon: Clock },
@@ -141,6 +147,8 @@ function getNavGroupsForRole(user: any): NavGroup[] {
       label: 'Academic Hub',
       items: [
         { name: 'Command Center', href: '/dashboard', icon: Home },
+        { name: 'Notifications', href: '/notifications', icon: Bell, badge: '4 New' },
+        { name: 'Announcements', href: '/announcements', icon: Megaphone },
         { name: 'My Courses', href: '/courses', icon: BookOpen, badge: '5 Enrolled' },
         { name: 'Weekly Timetable', href: '/timetable', icon: CalendarDays },
         { name: 'Academic Profile & GPA', href: '/academics', icon: BarChart2, badge: '8.76' },

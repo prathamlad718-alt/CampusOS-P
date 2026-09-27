@@ -199,6 +199,31 @@ const KNOWLEDGE_BASE: SearchItem[] = [
     highlight: 'Next class: CS-302 DBMS at 11:15 AM (Room 204)',
     badge: 'Timetable',
     url: '/timetable'
+  },
+  {
+    id: 'a8',
+    category: 'action',
+    title: 'Actionable Notification Center',
+    subtitle: 'Attendance drops, coursework deadlines & transit delay alerts',
+    badge: 'Alerts',
+    url: '/notifications'
+  },
+  {
+    id: 'a9',
+    category: 'action',
+    title: 'Official Campus Announcements',
+    subtitle: 'Institutional directives, examination rescheduling & circulars',
+    badge: 'Circulars',
+    url: '/announcements'
+  },
+  {
+    id: 'q9',
+    category: 'answer',
+    title: 'Mid-Sem Examination Rescheduling Circular',
+    subtitle: 'Exam dates moved to Oct 19–23 due to NBA accreditation visits',
+    highlight: 'Regular classes continue as per weekly timetable during Oct 12–16',
+    badge: 'Urgent Directive',
+    url: '/announcements'
   }
 ];
 
@@ -257,6 +282,8 @@ export function UniversalSearchModal({ isOpen, onClose }: UniversalSearchModalPr
     if ((q.includes('course') || q.includes('subject') || q.includes('curriculum') || q.includes('syllabus')) && (item.id === 'a5')) return true;
     if ((q.includes('timetable') || q.includes('schedule') || q.includes('period') || q.includes('class time') || q.includes('monday') || q.includes('friday')) && (item.id === 'a6' || item.id === 'q8')) return true;
     if ((q.includes('gpa') || q.includes('cgpa') || q.includes('sgpa') || q.includes('transcript') || q.includes('result') || q.includes('mark') || q.includes('grade')) && (item.id === 'a7' || item.id === 'q7')) return true;
+    if ((q.includes('notification') || q.includes('alert') || q.includes('unread')) && item.id === 'a8') return true;
+    if ((q.includes('announcement') || q.includes('circular') || q.includes('notice') || q.includes('directive') || q.includes('reschedule') || q.includes('bulletin')) && (item.id === 'a9' || item.id === 'q9')) return true;
 
     return (
       item.title.toLowerCase().includes(q) ||
