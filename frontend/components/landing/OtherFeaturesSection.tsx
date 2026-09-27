@@ -1,90 +1,123 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { ArrowRight, Layers, Cpu, ShieldCheck, Zap } from 'lucide-react';
 
-const FEATURES = [
+const CAPABILITIES = [
   {
-    category: "Core Intelligence",
+    category: "Academic Operating Core",
+    icon: Layers,
     items: [
-      "Global Command Center",
-      "Universal Campus Search",
-      "Smart Notification System",
-      "Personal Academic Timeline",
-      "Privacy Center"
+      { name: "5-Unit Syllabus Management", link: "/courses" },
+      { name: "Master Weekly Timetable & Day View", link: "/timetable" },
+      { name: "10.0 Scale SGPA / CGPA Transcripts", link: "/academics" },
+      { name: "Faculty Continuous Evaluation Gradebook", link: "/courses" },
+      { name: "75% Attendance Health Guardrails", link: "/courses" }
     ]
   },
   {
-    category: "Academic OS",
+    category: "Smart Facilities & Logistics",
+    icon: Cpu,
     items: [
-      "Dedicated Faculty Workspace",
-      "Assignment & Deadline System",
-      "Campus Drive File System",
-      "Attendance Tracking",
-      "Interactive Syllabus"
+      { name: "AI Lab Workstation Booking", link: "/booking" },
+      { name: "Faculty Whole-Hall Reservation", link: "/booking" },
+      { name: "Library Quiet Pod Allocation", link: "/booking" },
+      { name: "Live Transit Fleet GPS Telemetry", link: "/transport" },
+      { name: "Campus Maintenance Issue Dispatch", link: "/issues" }
     ]
   },
   {
-    category: "Campus & Logistics",
+    category: "Directives & Telemetry",
+    icon: Zap,
     items: [
-      "Actual Campus Navigation",
-      "Transport Module (Buses)",
-      "Centralized Campus Services",
-      "Smart Issue Reporting",
-      "Cafeteria & Facilities"
+      { name: "Targeted Bulletins (Dept & Sem)", link: "/announcements" },
+      { name: "Emergency Broadcast Directives", link: "/announcements" },
+      { name: "1-Click Contextual Action Reminders", link: "/notifications" },
+      { name: "Interactive Academic Term Calendar", link: "/announcements" },
+      { name: "Student Council Chapter Portals", link: "/collaboration" }
     ]
   },
   {
-    category: "Ecosystem",
+    category: "Security & Governance",
+    icon: ShieldCheck,
     items: [
-      "Plugin Marketplace Architecture",
-      "Student Collaboration Hub",
-      "Club & Community Portals",
-      "Alumni Network integration",
-      "Role-Based Access Control"
+      { name: "Role-Based Access Control (RBAC)", link: "/dashboard" },
+      { name: "Cryptographic Transcript Verification", link: "/academics" },
+      { name: "Zero-Clash Scheduling Constraint Solver", link: "/timetable" },
+      { name: "Universal Dispatch Command Bar (⌘K)", link: "/dashboard" },
+      { name: "Modular Plugin Architecture SDK", link: "/plugins" }
     ]
   }
 ];
 
 export function OtherFeaturesSection() {
   return (
-    <section className="relative w-full px-6 py-32 border-t border-line/30 bg-ink">
-      <div className="mx-auto max-w-6xl">
+    <section className="relative w-full px-6 py-28 border-t border-line/60 bg-ink-2/40" id="capabilities">
+      <div className="mx-auto max-w-7xl">
         
-        <div className="mb-16">
-          <p className="system-label text-tide mb-4">Plugin Architecture</p>
-          <h2 className="text-4xl lg:text-5xl font-serif text-bone max-w-2xl">
-            Start with the core.<br />
-            <span className="text-mist">Install the rest.</span>
-          </h2>
-          <p className="mt-6 text-mist text-lg max-w-xl font-light">
-            Campus OS operates on a modular plugin architecture. Every university is different. Start with Users and Timetables, then simply browse the marketplace to enable Transport, Hostels, or Campus Drive with a single click.
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-line gap-6">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-2 h-2 rounded-full bg-blue-500" />
+              <p className="text-[11px] font-mono uppercase tracking-widest text-blue-400">
+                Complete Institutional Breadth
+              </p>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-serif text-bone max-w-2xl tracking-tight">
+              One coherent system.<br />
+              <span className="text-mist">Twenty interconnected capabilities.</span>
+            </h2>
+          </div>
+          <p className="text-sm text-mist max-w-md font-light leading-relaxed">
+            Every module in CampusOS communicates with the central kernel. When an exam schedule is updated, timetables, room bookings, and student notifications synchronize automatically.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
-          {FEATURES.map((group, idx) => (
-            <motion.div 
-              key={group.category}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-            >
-              <h3 className="text-sm font-mono text-mist uppercase tracking-widest border-b border-line pb-4 mb-6">
-                {group.category}
-              </h3>
-              <ul className="space-y-4">
-                {group.items.map((item, itemIdx) => (
-                  <li key={itemIdx} className="flex items-center gap-3 group">
-                    <span className="w-1 h-1 rounded-full bg-tide/30 group-hover:bg-tide transition-colors" />
-                    <span className="text-bone/80 group-hover:text-bone transition-colors text-sm">
-                      {item}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {CAPABILITIES.map((group, idx) => {
+            const Icon = group.icon;
+            return (
+              <motion.div
+                key={group.category}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="p-6 rounded-2xl border border-line-strong bg-ink/70 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center gap-2.5 pb-4 mb-5 border-b border-line">
+                    <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center">
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <h3 className="text-xs font-mono text-bone uppercase tracking-wider font-semibold">
+                      {group.category}
+                    </h3>
+                  </div>
+
+                  <ul className="space-y-3.5">
+                    {group.items.map((item, itemIdx) => (
+                      <li key={itemIdx}>
+                        <Link
+                          href={item.link}
+                          className="flex items-center gap-2.5 group text-xs text-mist hover:text-bone transition-colors"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-blue-500/40 group-hover:bg-blue-400 group-hover:scale-125 transition-all shrink-0" />
+                          <span className="leading-snug">{item.name}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-line/40 flex items-center justify-between text-[11px] font-mono text-mist">
+                  <span>Subsystem 0{idx + 1}</span>
+                  <span className="text-emerald-400">● Verified</span>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>
