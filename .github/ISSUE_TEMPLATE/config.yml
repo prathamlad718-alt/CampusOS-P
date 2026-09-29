@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/NITRR-Official/CampusOS/discussions
+    about: Ask questions and share ideas with the community
+  - name: 📚 Developer Guide
+    url: https://github.com/NITRR-Official/CampusOS/blob/main/README.md
+    about: Learn how to get started with CampusOS development
+  - name: 🔐 Security Issues
+    url: https://github.com/NITRR-Official/CampusOS/security/advisories
+    about: Report security vulnerabilities responsibly

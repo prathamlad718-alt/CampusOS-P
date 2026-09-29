@@ -1,0 +1,83 @@
+humanet:
+  version: "1.0"
+  
+  # Metadata
+  id: ""
+  name: "campus-os"
+  tagline: "A modular Campus Operating System for managing the complete lifecycle of campus activities"
+  description: ""
+  created: "2026-03-31"
+  updated: "2026-03-31"
+  
+  # Lifecycle
+  status: "provisional"
+  status_history:
+    - status: "provisional"
+      date: "2026-03-31"
+      note: "Initial idea submission"
+  provisional_deadline: "2026-04-30"
+  
+  # Domains
+  domains:
+    - dev-tools
+    - education
+    - other
+  
+  tags: []
+  
+  # Contributors
+  maintainers:
+    - username: "TheFakeCreator"
+      role: "creator"
+      joined: "2026-03-31"
+      karma: 0
+  
+  contributors: []
+  
+  # Evolution
+  parent: null
+  forks: []
+  branches: []
+  related: []
+  
+  # Validation
+  last_evaluated: null
+  evaluation_score: null
+  validation_status: "pending"
+  evaluation_criteria:
+    clarity: null
+    feasibility: null
+    impact: null
+    originality: null
+    completeness: null
+  ai_feedback: null
+  
+  # Links
+  platform_url: null
+  repository_url: "https://github.com/NITRR-Official/CampusOS"
+  links:
+    website: ""
+    documentation: ""
+    demo: ""
+    prototype: ""
+    discussion: ""
+  
+  # Settings
+  license: "MIT"
+  accepting_contributions: true
+  contribution_guidelines: ""
+  contact:
+    email: ""
+    discord: ""
+    twitter: ""
+  
+  # Metrics
+  metrics:
+    last_commit: null
+    commit_count: 0
+    views: 0
+    stars: 0
+    forks: 0
+    contributors_count: 1
+    discussions_count: 0
+    total_karma_distributed: 0
